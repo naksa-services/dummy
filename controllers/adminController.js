@@ -4,8 +4,8 @@ const adminModel = require("../models/adminModel");
 // create admin
 const createAdmin = async (req, res) => {
   try {
-    const { name, email, phone } = req.body;
-    const response = await adminModel.create({ name, email, phone });
+    const { name, email, phone, password } = req.body;
+    const response = await adminModel.create({ name, email, phone, password });
     res.status(200).json({
       success: true,
       data: response,
@@ -70,6 +70,40 @@ const getAdminById = async (req, res) => {
   }
 };
 
+
+const adminLogin = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const admin = await adminModel.find({ phone: req.body.phone, password: req.body.password });
+
+    if (!admin) {
+      return res.status(404).json({
+        success: false,
+        message: "phone or password is incorrect",
+      });
+    }
+    if (admin.length < 1) {
+      res.status(200).json({
+        success: true,
+        data: admin,
+        message: "login failed",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: admin,
+      message: "login successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      data: {},
+      message: "something went wrong",
+    });
+  }
+};
 // delete admin
 
 const deleteAdmin = async (req, res) => {
@@ -97,10 +131,10 @@ const deleteAdmin = async (req, res) => {
 
 const updateAdmin = async (req, res) => {
   try {
-    const { id, name, email, phone, status } = req.body;
+    const { id, name, email, phone, status, password } = req.body;
     const admin = await adminModel.findByIdAndUpdate(
       { _id: id },
-      { name, email, phone, status },
+      { name, email, phone, status, password },
       { new: true }
     );
 
@@ -132,4 +166,5 @@ module.exports = {
   getAdminById,
   deleteAdmin,
   updateAdmin,
+  adminLogin
 };

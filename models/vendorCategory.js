@@ -38,4 +38,4 @@ const vendorCategorySchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model(" vendorCategory", vendorCategorySchema);
+module.exports = mongoose.model("vendorCategory", vendorCategorySchema);

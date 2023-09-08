@@ -12,6 +12,14 @@ const {
   updateCartModel,
 } = require("../controllers/cartModelController");
 
+
+const {
+  createSupport,
+  getSupport,
+  getSupportByvendorPhone,
+  deleteSupport,
+  updateSupportStatus,
+} = require("../controllers/SupportController");
 //cartProduct controller
 const {
   createCartProduct,
@@ -60,6 +68,14 @@ const {
   deleteVendorProduct,
   updateVendorProduct,
 } = require("../controllers/vendorProductController");
+const {
+  getBanner,
+  getBannerById,
+  updateBanner,
+  createBanner,
+  deleteBanner,
+  // testcategory
+} = require("../controllers/BannerController");
 
 
 //customer controller
@@ -89,6 +105,7 @@ const {
   getAdminById,
   deleteAdmin,
   updateAdmin,
+  adminLogin
 } = require("../controllers/adminController");
 
 
@@ -172,10 +189,10 @@ const {
   updateCustomerPoints,
 } = require("../controllers/CustomerPointsController");
 
-const { createVendorProductWithCsv} = require("../controllers/csvController");
+const { createVendorProductWithCsv } = require("../controllers/csvController");
 
 
-const {paymentReceipt, postPayment} = require('../controllers/paymentController');
+const { paymentReceipt, postPayment } = require('../controllers/paymentController');
 const { loginVendor } = require("../controllers/loginController");
 
 //define APi routes
@@ -189,6 +206,25 @@ router.get("/getCustomer/:id", getCustomerById);
 router.delete("/deleteCustomer/:id", deleteCustomer);
 router.post("/customerRegistration", customerRegistration)
 router.post("/optVerfication", optVerfication)
+
+
+// banner route
+
+router.post("/create_banner", createBanner);
+router.get("/get_banner/:id", getBannerById);
+router.get("/get_banner", getBanner);
+router.delete("/delete_banner/:id", deleteBanner);
+router.post("/update_banner", updateBanner)
+
+
+// support route
+
+router.post("/create_support", createSupport);
+router.get("/get_support_vendor_phone/:id", getSupportByvendorPhone);
+router.get("/get_support", getSupport);
+router.delete("/delete_support/:id", deleteSupport);
+router.put("/update_support_status", updateSupportStatus)
+
 
 
 
@@ -237,6 +273,7 @@ router.post("/createAdmin", createAdmin);
 router.get("/getAdmin", getAdmin);
 router.get("/getAdmin/:id", getAdminById);
 router.delete("/deleteAdmin/:id", deleteAdmin);
+router.post("/adminLogin/", adminLogin);
 
 //main category
 router.post("/create_main_category", createMainCategory);

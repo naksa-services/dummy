@@ -119,6 +119,18 @@ const getCustomer = async (req, res) => {
 
 
 };
+const getAllCustomer = async (req, res) => {
+  const phone = req.params.phone
+  const customer = await Customer.findOne({ phone: phone });
+  if (!customer) {
+    res.send([false, "not found"])
+  } else {
+    res.send([true, customer])
+  }
+
+
+};
+
 
 const getCustomerById = async (req, res) => {
   try {
