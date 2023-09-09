@@ -91,6 +91,60 @@ const DrivingLicenseVerification = async (req, res) => {
 
     axios(config)
         .then(async function (response) {
+            await sleep(4000);
+            console.log("nkbnk");
+            console.log(response.data.request_id);
+            var config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `https://eve.idfy.com/v3/tasks?request_id=${response.data.request_id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'account-id': process.env.Account_ID,
+                    'api-key': process.env.API_KEY
+                },
+
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(response.data);
+                    res.send({ status: response.data[0].status, data: response.data[0].result })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+const AaadharVarification = async (req, res) => {
+    const aadhar_number = req.body.aadharnumber;
+
+    var data = JSON.stringify({
+        "task_id": "74f4c926-250c-43ca-9c53-453e87ceacd1",
+        "group_id": "8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e",
+        "data": {
+            "aadhaar_number": aadhar_number
+        }
+    });
+
+    var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://eve.idfy.com/v3/tasks/async/verify_with_source/aadhaar_lite',
+        headers: {
+            'Content-Type': 'application/json',
+            'account-id': process.env.Account_ID,
+            'api-key': process.env.API_KEY
+        },
+        data: data
+    };
+
+    axios(config)
+        .then(async function (response) {
             await sleep(3000);
             console.log("nkbnk");
             console.log(response.data.request_id);
@@ -120,4 +174,114 @@ const DrivingLicenseVerification = async (req, res) => {
 }
 
 
-module.exports = { PanVarification, DrivingLicenseVerification }
+const GSTVarification = async (req, res) => {
+    const gst_number = req.body.gstnumber;
+
+    var data = JSON.stringify({
+        "task_id": "74f4c926-250c-43ca-9c53-453e87ceacd1",
+        "group_id": "8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e",
+        "data":
+
+        {
+            "gstin": gst_number,
+            "filing_status": true
+
+        }
+    });
+
+    var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://eve.idfy.com/v3/tasks/async/verify_with_source/ind_gst_certificate',
+        headers: {
+            'Content-Type': 'application/json',
+            'account-id': process.env.Account_ID,
+            'api-key': process.env.API_KEY
+        },
+        data: data
+    };
+
+    axios(config)
+        .then(async function (response) {
+            await sleep(3000);
+            console.log("nkbnk");
+            console.log(response.data.request_id);
+            var config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `https://eve.idfy.com/v3/tasks?request_id=${response.data.request_id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'account-id': process.env.Account_ID,
+                    'api-key': process.env.API_KEY
+                },
+
+            };
+
+            axios(config)
+                .then(function (response) {
+                    res.send({ status: response.data[0].status, data: response.data[0].result })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+const FSSAIVarification = async (req, res) => {
+    const fssai_number = req.body.fssainumber;
+
+    var data = JSON.stringify({
+        "task_id": "74f4c926-250c-43ca-9c53-453e87ceacd1",
+        "group_id": "8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e",
+        "data": {
+            "registration_no": fssai_number
+        }
+    });
+
+    var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://eve.idfy.com/v3/tasks/async/verify_with_source/ind_fssai',
+        headers: {
+            'Content-Type': 'application/json',
+            'account-id': process.env.Account_ID,
+            'api-key': process.env.API_KEY
+        },
+        data: data
+    };
+
+    axios(config)
+        .then(async function (response) {
+            await sleep(3000);
+            console.log("nkbnk");
+            console.log(response.data.request_id);
+            var config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `https://eve.idfy.com/v3/tasks?request_id=${response.data.request_id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'account-id': process.env.Account_ID,
+                    'api-key': process.env.API_KEY
+                },
+
+            };
+
+            axios(config)
+                .then(function (response) {
+                    res.send({ status: response.data[0].status, data: response.data[0].result })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+module.exports = { PanVarification, DrivingLicenseVerification, AaadharVarification, GSTVarification, FSSAIVarification }

@@ -237,7 +237,7 @@ router.put("/update_support_status", updateSupportStatus)
 // coupon Route 
 
 router.post("/create_offer", createCoupon);
-router.get("/get_support_vendor_phone/:id", getOffer);
+router.get("/get_offer/:id", getOffer);
 router.get("/get_offer_vendor_store", getOfferByVendorStore);
 router.delete("/delete_offer/:id", deletOffer);
 router.put("/update_offer", updateOffer)

@@ -6,10 +6,17 @@ const router = express.Router();
 //cartModel controller
 const {
     PanVarification,
-    DrivingLicenseVerification
+    DrivingLicenseVerification,
+    AaadharVarification,
+    GSTVarification,
+    FSSAIVarification
 } = require("../controllers/DocumentVarificationController");
 
-router.get("/verify_pan_card", PanVarification);
-router.get("/verify_driving_license", DrivingLicenseVerification);
+router.post("/verify_pan_card", PanVarification);
+router.post("/verify_driving_license", DrivingLicenseVerification);
+router.post("/verify_aadhar", AaadharVarification);
+router.post("/verify_gst", GSTVarification);
+router.post("/verify_fssai_license", FSSAIVarification);
+router.post("/verify_gst", GSTVarification);
 
 module.exports = router;

@@ -17,11 +17,13 @@ app.use('/uploads', express.static('uploads'));
 const routes = require("./routes/routes");
 
 const Doc_routes = require("./routes/Document_varification_rourte");
+const deliveryBoyRoute = require("./routes/DeliveryBoyRoutes");
 // const imageUpload = require("./maincomponent/imageUpload");
 
 //mount the todo API routes
 app.use("/api/v1", routes);
 app.use("/api/v1", Doc_routes);
+app.use("/api/v1", deliveryBoyRoute);
 // app.use("/api/v1", imageUpload);
 
 
