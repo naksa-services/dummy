@@ -189,6 +189,14 @@ const {
   updateCustomerPoints,
 } = require("../controllers/CustomerPointsController");
 
+const {
+  createCoupon,
+  getOffer,
+  getOfferByVendorStore,
+  deletOffer,
+  updateOffer,
+} = require("../controllers/CouponController");
+
 const { createVendorProductWithCsv } = require("../controllers/csvController");
 
 
@@ -225,6 +233,14 @@ router.get("/get_support", getSupport);
 router.delete("/delete_support/:id", deleteSupport);
 router.put("/update_support_status", updateSupportStatus)
 
+
+// coupon Route 
+
+router.post("/create_offer", createCoupon);
+router.get("/get_support_vendor_phone/:id", getOffer);
+router.get("/get_offer_vendor_store", getOfferByVendorStore);
+router.delete("/delete_offer/:id", deletOffer);
+router.put("/update_offer", updateOffer)
 
 
 
