@@ -1,6 +1,6 @@
 // const { model } = require("mongoose");
 const VendorStore = require("../models/vendorStore");
-const multer =  require('multer');
+const multer = require('multer');
 const updateVendorStore = async (req, res) => {
   try {
     const {
@@ -39,6 +39,42 @@ const updateVendorStore = async (req, res) => {
 const getVendorStore = async (req, res) => {
   try {
     const vendors = await VendorStore.find({});
+    res.status(200).json({
+      success: true,
+      data: vendors,
+      // message: "get of Data Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      data: "internal server error",
+      message: err.message,
+    });
+  }
+};
+
+
+const getVendorStoreWithVendor = async (req, res) => {
+  try {
+    const vid = req.params.vid;
+    const vendors = await VendorStore.find({ vid: vid }).populate(
+      [
+        {
+          path: "_id",
+          model: "vendorStore",
+          select: "_id storename address longitude latitude storeimage storeclosingtime storeopeningtime",
+        },
+
+      ]
+    ).populate([
+      {
+        path: "vid",
+        model: "vendor",
+        select: "name email",
+      },
+    ]);
     res.status(200).json({
       success: true,
       data: vendors,
@@ -100,60 +136,60 @@ const deleteVendorStore = async (req, res) => {
 };
 
 const Storage = multer.diskStorage({
-  destination:'./uploads',
-  filename:(req, file, cb)=>{
+  destination: './uploads',
+  filename: (req, file, cb) => {
     cb(null, file.originalname)
   },
 });
 
 const upload = multer({
-  storage:Storage,
+  storage: Storage,
 
 }).single('storeimage')
 const createVendorStore = async (req, res) => {
   try {
     // extract title and description from request body
-    
+
     // create a new VendorStore Obj and insert in DB
-    upload(req, res, async(err) => {
-    const vendorStor = new VendorStore({
-      address:req.body.address,
-      category:req.body.category,
-      city:req.body.city,
-      CountryCode:req.body.CountryCode,
-      friday:req.body.friday,
-      latitude:req.body.latitude,
-      longitude:req.body.longitude,
-      monday:req.body.monday,
-      saturday:req.body.saturday,
-      services:req.body.services,
-      state:req.body.state,
-      storename:req.body.storename,
-      storeOwner:req.body.storeOwner,
-      storeopeningtime:req.body.storeopeningtime,
-      storeclosingtime:req.body.storeclosingtime,
-      streetNumber:req.body.streetNumber,
-      sunday:req.body.sunday,
-      thursday:req.body.thursday,
-      tuesday:req.body.tuesday,
-      vid:req.body.vid,
-      wednesday:req.body.wednesday,
-      zipcode:req.body.zipcode,
-      storeimage:req.file.filename
+    upload(req, res, async (err) => {
+      const vendorStor = new VendorStore({
+        address: req.body.address,
+        category: req.body.category,
+        city: req.body.city,
+        CountryCode: req.body.CountryCode,
+        friday: req.body.friday,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        monday: req.body.monday,
+        saturday: req.body.saturday,
+        services: req.body.services,
+        state: req.body.state,
+        storename: req.body.storename,
+        storeOwner: req.body.storeOwner,
+        storeopeningtime: req.body.storeopeningtime,
+        storeclosingtime: req.body.storeclosingtime,
+        streetNumber: req.body.streetNumber,
+        sunday: req.body.sunday,
+        thursday: req.body.thursday,
+        tuesday: req.body.tuesday,
+        vid: req.body.vid,
+        wednesday: req.body.wednesday,
+        zipcode: req.body.zipcode,
+        storeimage: req.file.filename
+      })
+      // send a json response with a success flag
+      vendorStor.save().then(() => res.send({
+        success: true,
+        // data: res,
+        message: "creatd successfully",
+      })).catch((err) => {
+        res.send({
+          success: false,
+          data: "internal server error",
+          message: err.message,
+        });
+      })
     })
-    // send a json response with a success flag
-    vendorStor.save().then(() => res.send({
-      success: true,
-      // data: res,
-      message: "creatd successfully",
-    })).catch((err) =>{
-      res.send({
-        success: false,
-        data: "internal server error",
-        message: err.message,
-      });
-    })
-  })
   } catch (err) {
     console.error(err);
     console.log(err);
@@ -171,4 +207,5 @@ module.exports = {
   createVendorStore,
   updateVendorStore,
   deleteVendorStore,
+  getVendorStoreWithVendor
 };

@@ -151,6 +151,7 @@ const {
   getVendorStore,
   getVendorStoreById,
   deleteVendorStore,
+  getVendorStoreWithVendor,
   updateVendorStore,
 } = require("../controllers/vendorStoreController");
 
@@ -287,6 +288,7 @@ router.delete("/deleteVendorDocument/:id", deleteVendorDocument);
 //vendor Store
 router.post("/createVendorStore", createVendorStore);
 router.get("/getVendorStore", getVendorStore);
+router.get("/getVendorStorewithVendor/:vid", getVendorStoreWithVendor);
 router.get("/getVendorStore/:id", getVendorStoreById);
 router.delete("/deleteVendorStore/:id", deleteVendorStore);
 router.delete("/updateVendorStore", updateVendorStore);
