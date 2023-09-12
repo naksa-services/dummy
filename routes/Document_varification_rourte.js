@@ -11,7 +11,7 @@ const {
     GSTVarification,
     FSSAIVarification
 } = require("../controllers/DocumentVarificationController");
-
+                   
 router.post("/verify_pan_card", PanVarification);
 router.post("/verify_driving_license", DrivingLicenseVerification);
 router.post("/verify_aadhar", AaadharVarification);

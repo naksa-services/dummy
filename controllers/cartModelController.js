@@ -7,29 +7,50 @@ const createCartModel = async (req, res) => {
   try {
     //extract title and desxcription from reauest body
     const cart_obj = new cartModel({
-      customer_id:req.body.customer_id,
-      vendor_id:req.body.vendor_id,
-      store_id:req.body.store_id,
-      product_id:req.body.product_id,
-      quantity:req.body.quantity,
-      price:req.body.price
+      customer_id: req.body.customer_id,
+      vendor_id: req.body.vendor_id,
+      store_id: req.body.store_id,
+      product_id: req.body.product_id,
+      quantity: req.body.quantity,
+      price: req.body.price
     })
 
-    
+    const cartData = await Cart.find({});
+    if (cartData.length >= 1) {
+      if (cartData[0].store_id != req.body.store_id) {
+        await Cart.deleteMany({ customer_id: req.body.customer_id });
+        cart_obj.save().then(() => res.send({
+          success: true,
+          // data: cartData,
+          message: "deleted & creatd successfully",
+        }))
+          .catch((err) => {
+            res.send({
+              success: false,
+              data: "internal server error",
+              message: err.message,
+            });
+          })
+      }
+      else {
+        cart_obj.save().then(() => res.send({
+          success: true,
+          // data: cartData,
+          message: "creatd successfully",
+        }))
+          .catch((err) => {
+            res.send({
+              success: false,
+              data: "internal server error",
+              message: err.message,
+            });
+          })
+      }
+    }
+    // console.log(cartData);
 
-   cart_obj.save().then(()=> res.send({
-    success: true,
-    // data: res,
-    message: "creatd successfully",
-  })).catch((err) =>{
-    res.send({
-      success: false,
-      data: "internal server error",
-      message: err.message,
-    });
-  })
     //send a json response with a success flag
-    
+
   } catch (err) {
     console.error(err);
     console.log(err);
@@ -108,34 +129,37 @@ const getCartModelById = async (req, res) => {
 const updateCartModel = async (req, res) => {
   try {
     const { id, increDecre } = req.body;
-    if (increDecre == "add"){
-    const cart = await Cart.findById(
-      { _id: id },
-     
-    );
-    cart.updateOne( { quantity:cart.quantity+1 },
-      { new: true })
-  }
-  else if(increDecre == "remove"){
-    const cart = await Cart.findById(
-      { _id: id },
-      
-    );
-    cart.updateOne( { quantity:cart.quantity-1 },
-      { new: true })
-  }
 
+    const cart = await Cart.findById(
+      { _id: id }
+
+    );
     if (!cart) {
-      return res.status(404).json({
-        success: false,
-        message: "No data found with right Id",
-      });
+      res.send({ data: "ID not found", status: false });
     }
-    res.status(200).json({
-      success: true,
-      data: cart,
-      message: `Cart updated successfully`,
-    });
+    if (increDecre == "add") {
+
+
+      const ndata = await Cart.findByIdAndUpdate({ _id: id }, { quantity: cart.quantity + 1 },
+        { new: true })
+      res.send({ status: true, data: "quantity updated successfully" });
+    }
+    else if (increDecre == "remove") {
+      if (cart.quantity == 1) {
+        const ndata = await Cart.findByIdAndDelete(id)
+        res.send({ data: "product deleted successfully", status: true });
+      }
+      else {
+        const ndata = await Cart.findByIdAndUpdate({ _id: id }, { quantity: cart.quantity - 1 },
+          { new: true })
+        res.send({ status: true, data: "quantity updated successfully" });
+      }
+    }
+    else {
+      res.send({ status: false, data: "something went wrong!.." });
+    }
+
+
   } catch (err) {
     console.error(err);
     console.log(err);

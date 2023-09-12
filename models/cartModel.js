@@ -31,10 +31,10 @@ const cartModelSchema = new mongoose.Schema({
     ref: "vendorStore",
   },
   price: {
-    type:String
+    type: String
   },
   quantity: {
-    type:Number
+    type: Number
   },
 
   transdate: {

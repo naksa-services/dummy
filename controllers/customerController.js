@@ -121,11 +121,11 @@ const getCustomer = async (req, res) => {
 };
 const getAllCustomer = async (req, res) => {
   const phone = req.params.phone
-  const customer = await Customer.findOne({ phone: phone });
+  const customer = await Customer.findOne({});
   if (!customer) {
-    res.send([false, "not found"])
+    res.send({ status: false, data: [] })
   } else {
-    res.send([true, customer])
+    res.send({ status: true, data: customer })
   }
 
 
@@ -195,5 +195,5 @@ module.exports = {
   updateCustomer,
   createCustomerProfile,
   // createCustomer,
-  deleteCustomer, getCustomer, getCustomerById, customerRegistration, optVerfication
+  deleteCustomer, getCustomer, getCustomerById, customerRegistration, optVerfication, getAllCustomer
 }

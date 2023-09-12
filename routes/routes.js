@@ -88,7 +88,8 @@ const {
   updateCustomer,
   customerRegistration,
   optVerfication,
-  createCustomerProfile
+  createCustomerProfile,
+  getAllCustomer
 } = require("../controllers/customerController");
 
 
@@ -197,6 +198,11 @@ const {
   updateOffer,
 } = require("../controllers/CouponController");
 
+
+const {
+  createCustomerOrder,
+} = require("../controllers/CustomerOrderController");
+
 const { createVendorProductWithCsv } = require("../controllers/csvController");
 
 
@@ -210,12 +216,13 @@ router.post("/loginVendor", loginVendor);
 // customer profile 
 router.post("/createCustomerProfile", createCustomerProfile);
 router.get("/getCustomer/:phone", getCustomer);
+router.get("/getAllCustomer", getAllCustomer);
 router.get("/getCustomer/:id", getCustomerById);
 router.delete("/deleteCustomer/:id", deleteCustomer);
 router.post("/customerRegistration", customerRegistration)
 router.post("/optVerfication", optVerfication)
 
-
+router.post("/create_customer_order", createCustomerOrder);
 // banner route
 
 router.post("/create_banner", createBanner);
