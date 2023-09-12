@@ -202,7 +202,7 @@ const updateDeliveryBoy = async (req, res) => {
     try {
         const { id, name, email, phone, photo_url, role, mob_notification } =
             req.body;
-        const customer = await Customer.findByIdAndUpdate(
+        const customer = await deliveryBoy.findByIdAndUpdate(
             { _id: id },
             { name, email, phone, photo_url, role, mob_notification },
             { new: true }
@@ -229,6 +229,62 @@ const updateDeliveryBoy = async (req, res) => {
         });
     }
 };
+
+
+const deliveryBoyDocumentVerification = async (req, res) => {
+    try {
+        const {
+            pan,
+            dl_number,
+            aadharnumber,
+            rcnumber,
+            d_o_b,
+            panstatus,
+            aadharstatus,
+            dlstatus,
+            rcstatus,
+            id
+
+        } = re1.body;
+        const customer = await deliveryBoy.findByIdAndUpdate(
+            { _id: id },
+            {
+                pan,
+                dl_number,
+                aadharnumber,
+                rcnumber,
+                d_o_b,
+                panstatus,
+                aadharstatus,
+                dlstatus,
+                rcstatus
+            },
+            { new: true }
+        );
+        if (!customer) {
+            return res.status(404).json({
+                success: false,
+                message: "No data found with right Id",
+            });
+        }
+        res.status(200).json({
+            success: true,
+            // data: customer,
+            message: `delivery boy data updated successfully`,
+        });
+    }
+    catch (e) {
+        res.status(200).json({
+            success: false,
+            // data: customer,
+            message: `something went wrong.`,
+        });
+    }
+}
+
+
+
+
 
 module.exports = {
     deliveryBoyRegistration, deliveryBoyotpVerfication, createDeliveryBoyProfile, getDeliveryBoy, getDeliveryBoyprofile, getDeliveryBoybyID, updateDeliveryBoy, updateOnlineStatusDeliveryBoy, updateStatusDeliveryBoy

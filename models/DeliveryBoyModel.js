@@ -41,6 +41,9 @@ const DeliveryBoySchema = new mongoose.Schema({
     rcnumber: {
         type: String,
     },
+    d_o_b: {
+        type: String,
+    },
     photo_url: {
         type: String,
     },
@@ -85,9 +88,28 @@ const DeliveryBoySchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    // otp: {
-    //     type: String,
-    // },
+    t_shirt_size
+        : {
+        type: String,
+    },
+    cap_size
+        : {
+        type: String,
+    },
+    delivered: {
+        type: String
+    }, amount: {
+        type: String
+    },
+    gst: {
+        type: String
+    },
+    payment_method: {
+        type: String
+    },
+    payment_status: {
+        type: String
+    },
     role: {
         type: String,
         enum: ["admin", "deliveryboy", "vendor", "customer"],
