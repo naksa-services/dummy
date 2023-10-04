@@ -74,7 +74,7 @@ const getCustomerAddress = async (req, res) => {
 const getCustomerAddressById = async (req, res) => {
     try {
         const id = req.params.id;
-        const customerAddress = await CustomerAddress.findById({ _id: id });
+        const customerAddress = await CustomerAddress.find({ _id: id });
 
         if (!customerAddress) {
             return res.status(404).json({
